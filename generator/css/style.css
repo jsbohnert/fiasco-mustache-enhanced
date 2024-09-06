@@ -53,6 +53,13 @@
 }
 
 /* Cover of the Playset */
+
+.cover-label {
+  font-weight: 700;
+  width: 140px;
+  margin: 10px auto;
+}
+
 .cover-without {
   height: 200px;
   width: 140px;

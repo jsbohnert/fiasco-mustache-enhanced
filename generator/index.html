@@ -77,8 +77,11 @@
            </div>
          </div>
          <div class="col-md-3">
-           <div class="cover-without" data-bind="visible: isWithNoCover, click: loadCover"></div>
-           <img class="cover-preview" data-bind="visible: isCoverLoaded, click: loadCover, attr: {src: playsetCover()}"></img>
+         <div class="cover-label">Cover Image</div>
+           <div class="cover-without" style="display: block;" data-bind="visible: isWithNoCover, click: loadCover">
+                <img alt="add cover page" src="img/cover_add_blank.png"/>
+           </div>
+           <img alt="uploaded cover page" class="cover-preview" style="display: none;" data-bind="visible: isCoverLoaded, click: loadCover, attr: {src: playsetCover()}"/>
            <form style="display:none" id="cover-load-form">
      			  <input type="file" id="cover-load" name="file" class="form-control" style="display:none"
                    />
