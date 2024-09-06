@@ -6,10 +6,12 @@ function playsetVM(lngManager) {
 
   /* Introduction Section - Description of Playset */
   self.playsetTitle = ko.observable('Playset Title');
-  self.playsetSubtitle = ko.observable('Playset Sub-Title');
+  self.playsetSubtitle = ko.observable('Playset Subtitle');
   self.playsetTeaser = ko.observable('Playset Teaser');
   self.playsetDescription = ko.observable('');
-  self.playsetCredits = ko.observable('#Credits\nMade via Fiasco-Mustache\n#Boilerplate\nFiasco is Bully Pulpit Games production.');
+  self.playsetCredits = ko.observable('Made via Fiasco-Mustache');
+  self.playsetBoilerplate = ko.observable('Fiasco is Bully Pulpit Games production.');
+  self.playsetMovieNight = ko.observable('Films to watch');
   self.playsetCover = ko.observable(null);
 
   /* Sections of Categories / Items */
@@ -104,6 +106,8 @@ function playsetVM(lngManager) {
         self.playsetDescription(get_oldDescription_toNewFormat(jsonData));
       }
       self.playsetCredits(jsonData.credits);
+      self.playsetBoilerplate(jsonData.boilerplate);
+      self.playsetMovieNight(jsonData.movienight);
 
 
       // Sections / Categories / Details

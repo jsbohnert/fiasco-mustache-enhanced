@@ -39,6 +39,8 @@ function pdf_add_description(content, playsetVM)
   // Title page with credits
   content.push({ text: playsetVM.playsetTitle(), style: 'title', pageOrientation: 'portrait'});
   var creditsBlocks = divideText_intoBlocks_titleParagraph(playsetVM.playsetCredits());
+
+  content.push({ text: playsetVM.languageManager.current().section_credits, style: 'subTitle' });
   for(var iBlock = 0; iBlock < creditsBlocks.length; iBlock++)
   {
     var block = { "style": "description", "text": creditsBlocks[iBlock].content };
@@ -48,8 +50,20 @@ function pdf_add_description(content, playsetVM)
     content.push(block);
   }
 
+  var boilerplateBlocks = divideText_intoBlocks_titleParagraph(playsetVM.playsetBoilerplate());
+  content.push({ text: playsetVM.languageManager.current().section_boilerplate, style: 'subTitle' });
+  for(var iBlock = 0; iBlock < boilerplateBlocks.length; iBlock++)
+  {
+    var block = { "style": "description", "text": boilerplateBlocks[iBlock].content };
+    if (boilerplateBlocks[iBlock].type == 'title') {
+      block.style = 'subTitle';
+    }
+    content.push(block);
+  }
+
   // Description page
-  content.push({ text: playsetVM.playsetSubtitle(), style: 'title', pageOrientation: 'portrait', pageBreak: 'before' });
+  content.push({ text: playsetVM.languageManager.current().section_thescore, style: 'title' , pageBreak: 'before'});
+  content.push({ text: playsetVM.playsetSubtitle(), style: 'subTitle', pageOrientation: 'portrait' });
   var descriptionBlocks = divideText_intoBlocks_titleParagraph(playsetVM.playsetDescription());
   for(var iBlock = 0; iBlock < descriptionBlocks.length; iBlock++)
   {
@@ -69,6 +83,10 @@ function pdf_add_description(content, playsetVM)
       content.push({ text: descriptionBlocks[iBlock].content, style: blockStyle });
     }
   }
+
+  // Movie Night
+  content.push({ text: playsetVM.languageManager.current().section_movienight, style: 'subTitle', pageOrientation: 'portrait'});
+  content.push({ text: playsetVM.playsetMovieNight(), style: blockStyle});
 }
 
 function pdf_add_cover(content, dataUrl)

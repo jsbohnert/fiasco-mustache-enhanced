@@ -1,5 +1,9 @@
 var data = {
   label: "English",
+  section_credits: "Credits",
+  section_boilerplate: "Boilerplate",
+  section_movienight: "Movie Night",
+  section_thescore: "The Score",
   instasetup_title: "Insta-Setup",
   instasetup_for3: "For 3 players ...",
   instasetup_for4: "For 4 players, add ...",

@@ -17,6 +17,8 @@ function get_json_fromPlaysetVM(playsetVM, withDescriptionParts, withDescription
   json_set_description(jsonData, playsetVM.playsetDescription(), withDescriptionParts, withDescriptionParagraphs);
 
   jsonData.credits = playsetVM.playsetCredits();
+  jsonData.boilerplate = playsetVM.playsetBoilerplate();
+  jsonData.movienight = playsetVM.playsetMovieNight();
 
   // Tables of elements
   jsonData.sections = [];

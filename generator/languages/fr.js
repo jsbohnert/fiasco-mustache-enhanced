@@ -1,5 +1,9 @@
 var data = {
   label: "Français",
+  section_credits: "Crédits",
+  section_boilerplate: "Boilerplate",
+  section_movienight: "Films",
+  section_thescore: "The Score",
   instasetup_title: "Insta-Setup",
   instasetup_for3: "Pour 3 joueurs ...",
   instasetup_for4: "Pour 4 joueurs, ajoutez ...",
