@@ -1,3 +1,22 @@
+function defaultSectionTitleByIndex(lang, idx) {
+  switch(idx) {
+    case 1:
+      return lang.category_relationships;
+      break;
+    case 2:
+      return lang.category_needs;
+      break;
+    case 3:
+      return lang.category_objects;
+      break;
+    case 4:
+      return lang.category_locations;
+      break;
+    default:
+      return `Section #${idx}`
+  }
+}
+
 function playsetVM(lngManager) {
 
   var self = this;
@@ -17,7 +36,7 @@ function playsetVM(lngManager) {
   /* Sections of Categories / Items */
   self.sections = ko.observableArray([]);
   for(var iSection = 1; iSection <= 4; iSection++) {
-    var section = new sectionVM('Section #' + iSection, iSection);
+    var section = new sectionVM(defaultSectionTitleByIndex(self.languageManager.current(), iSection), iSection);
     self.sections.push(section);
   }
 
