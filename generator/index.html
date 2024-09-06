@@ -299,6 +299,7 @@
     <script src="scripts/sectionVM.js"></script>
     <script src="scripts/instasetupVM.js"></script>
     <script src="scripts/playsetVM.js"></script>
+    <script src="scripts/diceFiles.js"></script>
  </body>
  <script>
 
@@ -314,7 +315,7 @@ function generate_mustache()
 
 $(function() {
 
-   var viewModel = new playsetVM(langManager);
+   var viewModel = new playsetVM(langManager, diceFiles);
    ko.applyBindings(viewModel);
 
    $("#file-load").change(function (evt) {

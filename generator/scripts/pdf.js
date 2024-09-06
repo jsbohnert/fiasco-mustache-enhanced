@@ -19,7 +19,7 @@ function generate_pdf(playsetVM)
   for(var iSection = 0; iSection < playsetVM.sections().length; iSection++)
   {
     var currentSection = playsetVM.sections()[iSection];
-    pdf_add_section(docDefinition.content, currentSection, playsetVM.playsetTeaser(), playsetVM.playsetTitle());
+    pdf_add_section(docDefinition.content, currentSection, playsetVM.playsetTeaser(), playsetVM.playsetTitle(), playsetVM);
   }
 
   pdf_add_instasetup(docDefinition.content, playsetVM);
@@ -100,7 +100,7 @@ function pdf_add_cover(content, dataUrl)
  * @param {json} jsonSection   Json data for the Section description
  * @param {string} playsetTeaser Teaser (bottom description) for the playset
  */
-function pdf_add_section(content, sectionVM, playsetTeaser, playsetTitle)
+function pdf_add_section(content, sectionVM, playsetTeaser, playsetTitle, playset)
 {
   content.push({ text: playsetTitle, style: 'titleOnHeader', pageBreak: 'before', pageOrientation: 'landscape' });
   content.push({ text: sectionVM.title() + " ...", style: 'sectionHeader' });
@@ -118,12 +118,46 @@ function pdf_add_section(content, sectionVM, playsetTeaser, playsetTitle)
 
     var currentCategory = sectionVM.categories()[iCategory];
     columns[iColumn].push({ text: (iCategory + 1) + " - " + currentCategory.title(), style: 'category' } );
-    // Chaque élément de la catégorie
-    for (var iDetail = 0; iDetail < currentCategory.items().length; iDetail++)
-    {
-      var currentDetail = currentCategory.items()[iDetail];
-      columns[iColumn].push({ text: (iDetail + 1) + " - " + currentDetail.textValue(), style: 'details' });
-    }
+    columns[iColumn].push({
+       table: {
+          headerRows: 0,
+          widths: [6, 14, '*'],
+          body: [
+            [
+              {text: ""},
+              {image: playset.dice1(), width: 12},
+              {text: currentCategory.items()[0].textValue(), style: 'details'}
+            ],
+            [
+              {text: ""},
+              {image: playset.dice2(), width: 12},
+              {text: currentCategory.items()[1].textValue(), style: 'details'}
+            ],
+            [
+              {text: ""},
+              {image: playset.dice3(), width: 12},
+              {text: currentCategory.items()[2].textValue(), style: 'details'}
+            ],
+            [
+              {text: ""},
+              {image: playset.dice4(), width: 12},
+              {text: currentCategory.items()[3].textValue(), style: 'details'}
+            ],
+            [
+              {text: ""},
+              {image: playset.dice5(), width: 12},
+              {text: currentCategory.items()[4].textValue(), style: 'details'}
+            ],
+            [
+              {text: ""},
+              {image: playset.dice6(), width: 12},
+              {text: currentCategory.items()[5].textValue(), style: 'details'}
+            ]
+          ],
+       },
+       layout: "noBorders"
+     });
+
   }
   content.push({ columns: columns });
   content.push({ text: "... " + playsetTeaser, style: 'sectionFooter' });
@@ -187,23 +221,24 @@ function get_pdf_style()
     titleOnHeader: {
       fontSize: 10,
       font: "BowlbyOneSC",
-      marginTop: 0,
+      marginTop: -10,
       color: '#D08484',
       alignment: 'right'
     },
     sectionHeader: {
       fontSize: 26,
       font: "BowlbyOneSC",
-      marginBottom: 8,
+      marginBottom: 2,
       marginTop: -10,
       color: '#8B1F1C'
     },
     sectionFooter: {
-      fontSize: 22,
+      fontSize: 16,
       font: "BowlbyOneSC",
       color: '#8B1F1C',
       alignment: 'right',
-      marginTop: 5
+      marginTop: 4,
+      marginBottom: 2
     },
     instaSetupSection: {
       fontSize: 26,
@@ -221,7 +256,7 @@ function get_pdf_style()
     },
     details: {
       fontSize: 12,
-      marginLeft: 22,
+      marginLeft: 2,
       marginTop: 1
     },
     title: {

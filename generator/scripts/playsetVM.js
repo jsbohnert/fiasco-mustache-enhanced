@@ -17,7 +17,7 @@ function defaultSectionTitleByIndex(lang, idx) {
   }
 }
 
-function playsetVM(lngManager) {
+function playsetVM(lngManager, diceFiles) {
 
   var self = this;
 
@@ -32,6 +32,12 @@ function playsetVM(lngManager) {
   self.playsetBoilerplate = ko.observable('Fiasco is Bully Pulpit Games production.');
   self.playsetMovieNight = ko.observable('Films to watch');
   self.playsetCover = ko.observable(null);
+  self.dice1 = ko.observable(diceFiles["dice1"]);
+  self.dice2 = ko.observable(diceFiles["dice2"]);
+  self.dice3 = ko.observable(diceFiles["dice3"]);
+  self.dice4 = ko.observable(diceFiles["dice4"]);
+  self.dice5 = ko.observable(diceFiles["dice5"]);
+  self.dice6 = ko.observable(diceFiles["dice6"]);
 
   /* Sections of Categories / Items */
   self.sections = ko.observableArray([]);
