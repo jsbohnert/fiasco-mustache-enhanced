@@ -25,7 +25,7 @@ function generate_pdf(playsetVM)
   pdf_add_instasetup(docDefinition.content, playsetVM);
 
   var customFilename = "Fiasco Playset - " + playsetVM.playsetTitle() + ".pdf";
-  console.log(JSON.stringify(docDefinition));
+  //console.log(JSON.stringify(docDefinition));
   pdfMake.createPdf(docDefinition).download(customFilename);
 }
 
