@@ -170,6 +170,10 @@ function pdf_add_section(content, sectionVM, playsetTeaser, playsetTitle, playse
  */
 function pdf_add_instasetup(content, playsetVM)
 {
+  if ( !playsetVM.instasetup().instasetupEnabled())
+  {
+    return;
+  }
   content.push({ text: playsetVM.playsetTitle(), style: 'titleOnHeader', pageBreak: 'before', pageOrientation: 'portrait' });
   content.push({ text: playsetVM.languageManager.current().instasetup_title, style: 'title' });
 

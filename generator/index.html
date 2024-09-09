@@ -166,13 +166,16 @@
      <div id='section5' class='section' data-bind='visible: isInstaSetupVisible'>
          <!-- ko with: instasetup -->
          <div class='row'>
-            <div class='col-md-2 col-md-offset-1'>
+            <div class='col-md-2 col-md-offset-1 condensed-row'>
+               <label for="check-instasetup-enabled">Enabled</label>
+               <input type="checkbox" id="check-instasetup-enabled" name="check-instasetup-enabled" data-bind="checked: instasetupEnabled" />
                <button type="button" id='randomize-insta-setup' class="btn btn-primary instasetup-buttons"
-                       data-bind="{click: randomize}">Randomize !</button>
+                       data-bind="{visible: instasetupEnabled, click: randomize}">Randomize !</button>
             </div>
          </div>
 
          <!-- First Section of choices (usually Relationships)-->
+        <div data-bind="visible: instasetupEnabled">
          <div class='row'><div class='col-md-10 col-md-offset-1'>
              <select class='form-control section-selection'
                      data-bind="options: $parent.sections(), optionsText: 'titleValue', value: firstSection"></select>
@@ -237,7 +240,7 @@
              <select class='form-control instasetup-element-selection'
                      data-bind="options: fourthSection().details(), optionsText: 'titleWithCategory', value: fourthSectionChoice1"></select>
          </div></div>
-
+        </div>
          <!-- /ko -->
      </div>
 
