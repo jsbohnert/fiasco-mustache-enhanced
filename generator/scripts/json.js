@@ -28,6 +28,7 @@ function get_json_fromPlaysetVM(playsetVM, withDescriptionParts, withDescription
       var jsonSection = { label: currentSection.title() };
       // A unique property for the label
       jsonData["section"+(iSection + 1)] = jsonSection.label;
+      jsonSection.isEnabled = currentSection.isEnabled();
       jsonSection.categories = [];
       // Each category
       for (var iCategory = 0; iCategory < currentSection.categories().length; iCategory++) {

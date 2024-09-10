@@ -122,12 +122,19 @@
      <!-- Sections of D6 Tables -->
      <!-- ko foreach: sections -->
      <div class='section' data-bind="attr: {'id': 'section' + number()}, visible: isVisible()">
+     <div class='row' data-bind="visible: hideable">
+        <div class='col-md-12 condensed-row'>
+           <label data-bind="attr: {for: dynamicCheckId}">Enabled</label>
+           <input type="checkbox" data-bind="{checked: isEnabled, attr: {id: dynamicCheckId, name: dynamicCheckId}}"/ >
+        </div>
+     </div>
        <div class='sectionTitle row'>
          <div class='col-md-12 form-group'>
      	     <label data-bind="attr: {'for': 'sec' + number()}">Section designation</label>
      	     <input data-bind="attr: {'id': 'sec' + number()}, value: titleValue" type='text' class='form-control' />
      	   </div>
        </div>
+       <div data-bind="visible: isEnabled">
        <!-- ko foreach: categories -->
        <div class='category'>
      	   <div class='categoryTitle row'>
@@ -158,12 +165,13 @@
          <!-- /ko -->
        </div>
        <!-- /ko -->
+       </div>
      </div>
      <!-- /ko -->
 
 
      <!-- Insta-Setup -->
-     <div id='section5' class='section' data-bind='visible: isInstaSetupVisible'>
+     <div id='section6' class='section' data-bind='visible: isInstaSetupVisible'>
          <!-- ko with: instasetup -->
          <div class='row'>
             <div class='col-md-2 col-md-offset-1 condensed-row'>

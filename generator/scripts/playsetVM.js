@@ -12,8 +12,31 @@ function defaultSectionTitleByIndex(lang, idx) {
     case 4:
       return lang.category_locations;
       break;
+    case 5:
+      return lang.category_tilt;
+      break;
     default:
       return `Section #${idx}`
+  }
+}
+
+function sectionHideableByIndex(idx) {
+  switch(idx) {
+    case 5:
+      return true;
+      break;
+    default:
+      return false;
+  }
+}
+
+function sectionEnabledByIndex(idx) {
+  switch(idx) {
+    case 5:
+      return false;
+      break;
+    default:
+      return true;
   }
 }
 
@@ -41,8 +64,12 @@ function playsetVM(lngManager, diceFiles) {
 
   /* Sections of Categories / Items */
   self.sections = ko.observableArray([]);
-  for(var iSection = 1; iSection <= 4; iSection++) {
-    var section = new sectionVM(defaultSectionTitleByIndex(self.languageManager.current(), iSection), iSection);
+  for(var iSection = 1; iSection <= 5; iSection++) {
+    var section = new sectionVM(defaultSectionTitleByIndex(self.languageManager.current(), iSection), iSection,
+      {
+        hideable: sectionHideableByIndex(iSection),
+        isEnabled: sectionEnabledByIndex(iSection)
+      });
     self.sections.push(section);
   }
 
@@ -140,6 +167,7 @@ function playsetVM(lngManager, diceFiles) {
         var jsonSection = jsonData.sections[iSection];
         var sectionVM = self.sections()[iSection];
         sectionVM.titleValue(jsonSection.label);
+        sectionVM.isEnabled(jsonSection.isEnabled);
         for(var iCategory = 0; iCategory < jsonSection.categories.length; iCategory++) {
           var jsonCategory = jsonSection.categories[iCategory];
           var categoryVM = sectionVM.categories()[iCategory];

@@ -8,6 +8,7 @@ var data = {
   category_needs: "Besoins",
   category_objects: "Objets",
   category_locations: "Lieux",
+  category_tilt: "Tilt Table",
   instasetup_title: "Insta-Setup",
   instasetup_for3: "Pour 3 joueurs ...",
   instasetup_for4: "Pour 4 joueurs, ajoutez ...",

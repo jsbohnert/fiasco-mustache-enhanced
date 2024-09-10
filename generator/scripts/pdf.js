@@ -102,6 +102,10 @@ function pdf_add_cover(content, dataUrl)
  */
 function pdf_add_section(content, sectionVM, playsetTeaser, playsetTitle, playset)
 {
+  if (!sectionVM.isEnabled())
+  {
+    return;
+  }
   content.push({ text: playsetTitle, style: 'titleOnHeader', pageBreak: 'before', pageOrientation: 'landscape' });
   content.push({ text: sectionVM.title() + " ...", style: 'sectionHeader' });
 
