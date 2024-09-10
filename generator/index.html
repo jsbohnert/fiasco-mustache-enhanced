@@ -252,6 +252,64 @@
          <!-- /ko -->
      </div>
 
+     <!-- Aftermath -->
+     <div id='section7' class='section' data-bind='visible: isAftermathVisible'>
+         <!-- ko with: aftermath -->
+    <div class=''>
+       <label for="check-aftermath-enabled">Enabled</label>
+       <input type="checkbox" id="check-aftermath-enabled" name="check-aftermath-enabled" data-bind="checked: aftermathEnabled"/ >
+    </div>
+     <div data-bind='visible: aftermathEnabled'>
+         <div class=''>
+            <div class='sectionTitle row'>
+              <div class='col-md-10 summary' data-bind='text: playsetVM().languageManager.current().aftermath_summary'>
+              </div>
+            </div>
+
+
+          <div class="row tablespace">
+                <div class="col-md-2"><label class="padded-row" for='aftermath-tableone-title'>Aftermath Table 1:</label></div>
+                <div class="col-md-4"><input type='text' id="aftermath-tableone-title" class='form-control' data-bind="value: tableOneName" /></div>
+          </div>
+          <div class="container">
+         <!-- ko foreach: tableOneEntries -->
+     	   <div class='row' data-bind="">
+     	     <div class='col-md-4'>
+                <input type='text' class='form-control' data-bind="value: title" />
+     	     </div>
+     	     <div class='col-md-8'>
+                <input type='text' class='form-control' data-bind="value: desc" />
+     	     </div>
+     	   </div>
+         <!-- /ko -->
+          </div>
+
+          <div class="row tablespace">
+                <div class="col-md-2"><label class="padded-row" for='aftermath-tabletwo-title'>Aftermath Table 2:</label></div>
+                <div class="col-md-4"><input type='text' id="aftermath-tabletwo-title" class='form-control' data-bind="value: tableTwoName, visible: tableTwoEnabled" /></div>
+                <div class="col-md-4">
+                  <label class="padded-row" for="check-aftermath-tabletwo-enabled">Enabled</label>
+                  <input type="checkbox" id="check-aftermath-tabletwo-enabled" name="check-aftermath-tabletwo-enabled" data-bind="checked: tableTwoEnabled" />
+                </div>
+          </div>
+
+         <div class="container" data-bind='visible: tableTwoEnabled'>
+         <!-- ko foreach: tableTwoEntries -->
+     	   <div class='row' data-bind="">
+     	     <div class='col-md-4'>
+                <input type='text' class='form-control' data-bind="value: title" />
+     	     </div>
+     	     <div class='col-md-8'>
+                <input type='text' class='form-control' data-bind="value: desc" />
+     	     </div>
+     	   </div>
+         <!-- /ko -->
+         </div>
+         </div>
+     </div>
+         <!-- /ko -->
+     </div>
+
      <!-- Generation by Mustache of the playset with the help of a template -->
      <div data-bind='visible: isGeneratorVisible' class='section'>
     	<div class='row'><p class='col-md-12'>Mustache template to use for the generation</p></div>
@@ -309,6 +367,7 @@
     <script src="scripts/displayedSectionVM.js"></script>
     <script src="scripts/sectionVM.js"></script>
     <script src="scripts/instasetupVM.js"></script>
+    <script src="scripts/aftermathVM.js"></script>
     <script src="scripts/playsetVM.js"></script>
     <script src="scripts/diceFiles.js"></script>
  </body>

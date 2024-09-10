@@ -76,6 +76,8 @@ function playsetVM(lngManager, diceFiles) {
   /* Insta-Setup */
   var setup = new instasetupVM(self);
   self.instasetup = ko.observable(setup);
+  var aftermath = new aftermathVM(self);
+  self.aftermath = ko.observable(aftermath);
 
   /**********************/
   /* Sections of the UI */
@@ -87,6 +89,7 @@ function playsetVM(lngManager, diceFiles) {
     self.displayedSections.push(self.sections()[iSection].displayedSection());
   }
   self.displayedSections.push(new displayedSectionVM(self.languageManager.current().instasetup_title, 'InstaSetup', false));
+  self.displayedSections.push(new displayedSectionVM(self.languageManager.current().aftermath_title, 'Aftermath', false));
   self.displayedSections.push(new displayedSectionVM('Generator', 'Generator', false));
   self.displayedSections.push(new displayedSectionVM('About', 'About', false));
 
@@ -111,6 +114,7 @@ function playsetVM(lngManager, diceFiles) {
   }
   self.isIntroductionVisible = ko.pureComputed(function() { return self.isSectionVisible('Intro'); }, self);
   self.isInstaSetupVisible = ko.pureComputed(function() { return self.isSectionVisible('InstaSetup'); }, self);
+  self.isAftermathVisible = ko.pureComputed(function() { return self.isSectionVisible('Aftermath'); }, self);
   self.isGeneratorVisible = ko.pureComputed(function() { return self.isSectionVisible('Generator'); }, self);
   self.isAboutVisible = ko.pureComputed(function() { return self.isSectionVisible('About'); }, self);
 
@@ -180,6 +184,7 @@ function playsetVM(lngManager, diceFiles) {
         }
       }
       self.instasetup().fromJson(jsonData.instasetup);
+      self.aftermath().fromJson(jsonData.aftermath);
     }
   };
 

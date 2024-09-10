@@ -52,6 +52,7 @@ function get_json_fromPlaysetVM(playsetVM, withDescriptionParts, withDescription
 
   // All elements with a single property
   jsonData.instasetup = get_instasetup_json(playsetVM);
+  jsonData.aftermath = playsetVM.aftermath().toJson();
 
   return jsonData;
 }

@@ -15,7 +15,9 @@ var data = {
   instasetup_for34: "Pour 3 ou 4 joueurs ...",
   instasetup_for45: "Pour 4 ou 5 joueurs, ajoutez ...",
   instasetup_for5: "Pour 5 joueurs, ajoutez ...",
-  instasetup_forany: "Pour n'importe quel nombre de joueurs ..."
+  instasetup_forany: "Pour n'importe quel nombre de joueurs ...",
+  aftermath_title: "Conséquences",
+  aftermath_summary: "Support for one or two aftermath tables - disable the second table if a single table is desired. Any blank lines (without any text) will not be printed."
 };
 
 langManager.addDictionary("fr", data);

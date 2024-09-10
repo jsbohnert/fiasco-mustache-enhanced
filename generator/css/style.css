@@ -90,3 +90,19 @@ white-space: nowrap;
 div.condensed-row  > button{
 margin-left: 32px;
 }
+
+div.summary {
+margin-top: 4px;
+margin-bottom: 10px;
+}
+
+div.tablespace {
+margin-bottom: 8px;
+margin-top: 8px;
+}
+
+label.padded-row {
+padding-top: 6px;
+padding-right: 0px;
+}
+

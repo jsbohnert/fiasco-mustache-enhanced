@@ -23,6 +23,7 @@ function generate_pdf(playsetVM)
   }
 
   pdf_add_instasetup(docDefinition.content, playsetVM);
+  pdf_add_aftermath(docDefinition.content, playsetVM);
 
   var customFilename = "Fiasco Playset - " + playsetVM.playsetTitle() + ".pdf";
   //console.log(JSON.stringify(docDefinition));
@@ -220,6 +221,69 @@ function pdf_add_instasetup_detail(content, detail)
 }
 
 /**
+ * Add the Insta-Setup Section part for the PDF generation
+ * @param {json} content       Json data for pdfmake generation
+ * @param {json} playsetVM     ViewModel of the Playset
+ */
+function pdf_add_aftermath(content, playsetVM)
+{
+  var aftermath = playsetVM.aftermath();
+
+  if ( !aftermath.aftermathEnabled())
+  {
+    return;
+  }
+  content.push({ text: playsetVM.playsetTitle(), style: 'titleOnHeader', pageBreak: 'before', pageOrientation: 'portrait' });
+  content.push({ text: aftermath.tableOneName(), style: 'title' });
+  for (var iTableRow = 0; iTableRow < aftermath.tableOneEntries().length; iTableRow++)
+  {
+    var title = aftermath.tableOneEntries()[iTableRow].title().trim();
+    var desc = aftermath.tableOneEntries()[iTableRow].desc().trim();
+    if (title.length == 0 && desc.length == 0 ) 
+    {
+      continue;
+    }
+    pdf_add_aftermath_line(content, iTableRow, title, desc)
+
+  }
+
+  
+  if (!aftermath.tableTwoEnabled()) {
+    return;
+  }
+  content.push({ text: playsetVM.playsetTitle(), style: 'titleOnHeader', pageBreak: 'before', pageOrientation: 'portrait' });
+  content.push({ text: aftermath.tableTwoName(), style: 'title' });
+  
+  for (var iTableRow = 0; iTableRow < aftermath.tableTwoEntries().length; iTableRow++)
+    {
+      var title = aftermath.tableTwoEntries()[iTableRow].title().trim();
+      var desc = aftermath.tableTwoEntries()[iTableRow].desc().trim();
+      if (title.length == 0 && desc.length == 0 ) 
+      {
+        continue;
+      }
+      pdf_add_aftermath_line(content, iTableRow, title, desc)
+    }
+}
+
+function pdf_add_aftermath_line(content, idx, title, desc) {
+  if (title.length == 0 && desc.length == 0 ) 
+    {
+      return;
+    }
+
+    if (idx >  0) {
+      content.push({text: ' ', style: 'spacerLine'});
+    }
+    content.push({text: [
+  
+      {text: title, style: 'leadingText'},
+      '  ',
+      {text: desc}
+    ]});
+}
+
+/**
  * Get the style for the pdfmake generation
  * @return {json} Json for pdfmake styling
  */
@@ -284,6 +348,13 @@ function get_pdf_style()
       fontSize: 16,
 			marginBottom: 18,
       alignment: 'justify'
+    },
+    spacerLine: {
+      fontSize: 6
+    },
+    leadingText: {
+      marginTop: 2,
+      bold: true
     }
   };
   return styles;
