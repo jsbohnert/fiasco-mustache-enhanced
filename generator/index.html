@@ -316,34 +316,66 @@
         <div class="row">
           <h4 class="col-md-2">Colors</h4>
         </div>
-          <div class="row">
-            <div class="col-md-2 padded-row label-text">Primary(Titles)</div>
-            <div class="col-md-2">
-              <input type='text' id="option-color-primary" class='form-control' data-bind="value: optionColorPrimary, text: optionColorPrimary "/>
-            </div>
-            <div class="col-md-1 padded-row">
-              <div class='color-panel' data-bind="style:{ 'background-color' :  optionColorPrimary }">Sample</div>
-            </div>
+        <div class="row">
+          <div class="col-md-2 col-md-offset-1 padded-row label-text">Primary(Titles)</div>
+          <div class="col-md-2">
+            <input type='text' id="option-color-primary" class='form-control' data-bind="value: optionColorPrimary, text: optionColorPrimary "/>
           </div>
-          <div class="row">
-            <div class="col-md-2 padded-row label-text">Secondary(Subtitles)</div>
-            <div class="col-md-2">
-              <input type='text' id="option-color-secondary" class='form-control' data-bind="value: optionColorSecondary, text: optionColorSecondary "/>
-            </div>
-            <div class="col-md-1 padded-row">
-              <div class='color-panel' data-bind="style:{ 'background-color' :  optionColorSecondary }">Sample</div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-2 padded-row label-text">Tertiary(headers/footers)</div>
-            <div class="col-md-2">
-              <input type='text' id="option-color-subtle" class='form-control' data-bind="value: optionColorSubtle, text: optionColorSubtle "/>
-            </div>
-            <div class="col-md-1 padded-row">
-              <div class='color-panel' data-bind="style:{ 'background-color' :  optionColorSubtle }">Sample</div>
-            </div>
+          <div class="col-md-1 padded-row">
+            <div class='color-panel' data-bind="style:{ 'background-color' :  optionColorPrimary }">Sample</div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-2 col-md-offset-1 padded-row label-text">Secondary(Subtitles)</div>
+          <div class="col-md-2">
+            <input type='text' id="option-color-secondary" class='form-control' data-bind="value: optionColorSecondary, text: optionColorSecondary "/>
+          </div>
+          <div class="col-md-1 padded-row">
+            <div class='color-panel' data-bind="style:{ 'background-color' :  optionColorSecondary }">Sample</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 col-md-offset-1 padded-row label-text">Tertiary(headers/footers)</div>
+          <div class="col-md-2">
+            <input type='text' id="option-color-subtle" class='form-control' data-bind="value: optionColorSubtle, text: optionColorSubtle "/>
+          </div>
+          <div class="col-md-1 padded-row">
+            <div class='color-panel' data-bind="style:{ 'background-color' :  optionColorSubtle }">Sample</div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <h4 class="col-md-2">Layout</h4>
+        </div>
+
+        <div class="row">
+          <div class="col-md-2 col-md-offset-1 padded-row label-text">Table Layout</div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 col-md-offset-1">
+            <label for="option-layout-concise">
+              <input type="radio" name="option-layout" value="concise" data-bind="checked: optionTableLayout"/>
+              Concise
+            </label>
+          </div>
+          <div class="col-md">
+              Each table on one page, landscape. Better for short descriptions. (fiasco-mustache style)
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-2 col-md-offset-1">
+            <label for="option-layout-classic">
+              <input type="radio" name="option-layout" value="classic" data-bind="checked: optionTableLayout"/>
+              Classic Fiasco
+            </label>
+          </div>
+          <div class="col-md">
+              Each table spans 2 pages, portrait. Larger text, better for long descriptions.
+          </div>
+        </div>
+      </div>
      </div>
 
     <!-- About -->

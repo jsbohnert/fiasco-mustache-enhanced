@@ -35,7 +35,16 @@ function generate_pdf(playsetVM)
   for(var iSection = 0; iSection < playsetVM.sections().length; iSection++)
   {
     var currentSection = playsetVM.sections()[iSection];
-    pdf_add_section(docDefinition.content, currentSection, playsetVM.playsetTeaser(), playsetVM.playsetTitle(), playsetVM);
+    switch (playsetVM.optionTableLayout())
+    {
+      case "classic":
+        pdf_add_section_classic(docDefinition.content, currentSection, playsetVM.playsetTeaser(), playsetVM.playsetTitle(), playsetVM);
+        break;
+      case "concise":
+        pdf_add_section(docDefinition.content, currentSection, playsetVM.playsetTeaser(), playsetVM.playsetTitle(), playsetVM);
+        break;
+
+    }
   }
 
   pdf_add_instasetup(docDefinition.content, playsetVM);
@@ -119,6 +128,7 @@ function pdf_add_cover(content, dataUrl)
  */
 function pdf_add_section(content, sectionVM, playsetTeaser, playsetTitle, playset)
 {
+  var imageSize = 12;
   if (!sectionVM.isEnabled())
   {
     return;
@@ -146,32 +156,32 @@ function pdf_add_section(content, sectionVM, playsetTeaser, playsetTitle, playse
           body: [
             [
               {text: ""},
-              {image: playset.dice1(), width: 12},
+              {image: playset.dice1(), width: imageSize},
               {text: currentCategory.items()[0].textValue(), style: 'details'}
             ],
             [
               {text: ""},
-              {image: playset.dice2(), width: 12},
+              {image: playset.dice2(), width: imageSize},
               {text: currentCategory.items()[1].textValue(), style: 'details'}
             ],
             [
               {text: ""},
-              {image: playset.dice3(), width: 12},
+              {image: playset.dice3(), width: imageSize},
               {text: currentCategory.items()[2].textValue(), style: 'details'}
             ],
             [
               {text: ""},
-              {image: playset.dice4(), width: 12},
+              {image: playset.dice4(), width: imageSize},
               {text: currentCategory.items()[3].textValue(), style: 'details'}
             ],
             [
               {text: ""},
-              {image: playset.dice5(), width: 12},
+              {image: playset.dice5(), width: imageSize},
               {text: currentCategory.items()[4].textValue(), style: 'details'}
             ],
             [
               {text: ""},
-              {image: playset.dice6(), width: 12},
+              {image: playset.dice6(), width: imageSize},
               {text: currentCategory.items()[5].textValue(), style: 'details'}
             ]
           ],
@@ -182,6 +192,74 @@ function pdf_add_section(content, sectionVM, playsetTeaser, playsetTitle, playse
   }
   content.push({ columns: columns });
   content.push({ text: "... " + playsetTeaser, style: 'sectionFooter' });
+}
+
+
+function pdf_add_section_classic_page(content, pageCategories, sectionVM, playsetTeaser, playsetTitle, playset){
+  var imageSize = 16;
+  content.push({ text: playsetTitle, style: 'titleOnHeader', pageBreak: 'before', pageOrientation: 'portrait' });
+  content.push({ text: sectionVM.title() + " ...", style: 'sectionHeader' });
+
+  for (var iCat = 0; iCat < pageCategories.length; iCat++)
+  {
+    var category = pageCategories[iCat];
+    content.push({ text:  category.number() + " - " + category.title(), style: 'category' } );
+    content.push({
+       table: {
+          headerRows: 0,
+          widths: [6, 14, '*'],
+          body: [
+            [
+              {text: ""},
+              {image: playset.dice1(), width: imageSize},
+              {text: category.items()[0].textValue(), style: 'details2'}
+            ],
+            [
+              {text: ""},
+              {image: playset.dice2(), width: imageSize},
+              {text: category.items()[1].textValue(), style: 'details2'}
+            ],
+            [
+              {text: ""},
+              {image: playset.dice3(), width: imageSize},
+              {text: category.items()[2].textValue(), style: 'details2'}
+            ],
+            [
+              {text: ""},
+              {image: playset.dice4(), width: imageSize},
+              {text: category.items()[3].textValue(), style: 'details2'}
+            ],
+            [
+              {text: ""},
+              {image: playset.dice5(), width: imageSize},
+              {text: category.items()[4].textValue(), style: 'details2'}
+            ],
+            [
+              {text: ""},
+              {image: playset.dice6(), width: imageSize},
+              {text: category.items()[5].textValue(), style: 'details2'}
+            ]
+          ],
+       },
+       layout: "noBorders"
+    });
+  }
+
+  content.push({ text: "... " + playsetTeaser, style: 'sectionFooter' });
+}
+
+function pdf_add_section_classic(content, sectionVM, playsetTeaser, playsetTitle, playset)
+{
+  if (!sectionVM.isEnabled())
+  {
+    return;
+  }
+
+  var pageCategories = [sectionVM.categories()[0], sectionVM.categories()[1], sectionVM.categories()[2]];
+  pdf_add_section_classic_page(content, pageCategories, sectionVM, playsetTeaser, playsetTitle, playset);
+
+  var pageCategories = [sectionVM.categories()[3], sectionVM.categories()[4], sectionVM.categories()[5]];
+  pdf_add_section_classic_page(content, pageCategories, sectionVM, playsetTeaser, playsetTitle, playset);
 }
 
 /**
@@ -255,7 +333,7 @@ function pdf_add_aftermath(content, playsetVM)
   {
     var title = aftermath.tableOneEntries()[iTableRow].title().trim();
     var desc = aftermath.tableOneEntries()[iTableRow].desc().trim();
-    if (title.length == 0 && desc.length == 0 ) 
+    if (title.length == 0 && desc.length == 0 )
     {
       continue;
     }
@@ -263,18 +341,18 @@ function pdf_add_aftermath(content, playsetVM)
 
   }
 
-  
+
   if (!aftermath.tableTwoEnabled()) {
     return;
   }
   content.push({ text: playsetVM.playsetTitle(), style: 'titleOnHeader', pageBreak: 'before', pageOrientation: 'portrait' });
   content.push({ text: aftermath.tableTwoName(), style: 'title' });
-  
+
   for (var iTableRow = 0; iTableRow < aftermath.tableTwoEntries().length; iTableRow++)
     {
       var title = aftermath.tableTwoEntries()[iTableRow].title().trim();
       var desc = aftermath.tableTwoEntries()[iTableRow].desc().trim();
-      if (title.length == 0 && desc.length == 0 ) 
+      if (title.length == 0 && desc.length == 0 )
       {
         continue;
       }
@@ -283,7 +361,7 @@ function pdf_add_aftermath(content, playsetVM)
 }
 
 function pdf_add_aftermath_line(content, idx, title, desc) {
-  if (title.length == 0 && desc.length == 0 ) 
+  if (title.length == 0 && desc.length == 0 )
     {
       return;
     }
@@ -292,7 +370,7 @@ function pdf_add_aftermath_line(content, idx, title, desc) {
       content.push({text: ' ', style: 'spacerLine'});
     }
     content.push({text: [
-  
+
       {text: title, style: 'leadingText'},
       '  ',
       {text: desc}
@@ -345,7 +423,11 @@ function get_pdf_style(colors)
     details: {
       fontSize: 12,
       marginLeft: 2,
-      marginTop: 1
+     // marginTop: 1
+    },
+    details2: {
+      fontSize: 14,
+      marginLeft: 4,
     },
     title: {
       fontSize: 32,

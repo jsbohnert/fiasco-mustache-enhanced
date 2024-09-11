@@ -64,6 +64,7 @@ function playsetVM(lngManager, diceFiles) {
   self.optionColorPrimary = ko.observable("#AA2222");
   self.optionColorSecondary = ko.observable("#8B1F1C");
   self.optionColorSubtle = ko.observable("#D08484");
+  self.optionTableLayout = ko.observable("classic");
 
   /* Sections of Categories / Items */
   self.sections = ko.observableArray([]);
@@ -170,6 +171,7 @@ function playsetVM(lngManager, diceFiles) {
       self.optionColorPrimary(jsonData.optionColorPrimary);
       self.optionColorSecondary(jsonData.optionColorSecondary);
       self.optionColorSubtle(jsonData.optionColorSubtle);
+      self.optionTableLayout(jsonData.optionTableLayout);
 
 
       // Sections / Categories / Details
