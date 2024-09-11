@@ -19,6 +19,9 @@ function get_json_fromPlaysetVM(playsetVM, withDescriptionParts, withDescription
   jsonData.credits = playsetVM.playsetCredits();
   jsonData.boilerplate = playsetVM.playsetBoilerplate();
   jsonData.movienight = playsetVM.playsetMovieNight();
+  jsonData.optionColorPrimary = playsetVM.optionColorPrimary();
+  jsonData.optionColorSecondary = playsetVM.optionColorSecondary();
+  jsonData.optionColorSubtle = playsetVM.optionColorSubtle();
 
   // Tables of elements
   jsonData.sections = [];

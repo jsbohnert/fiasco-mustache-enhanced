@@ -310,11 +310,40 @@
          <!-- /ko -->
      </div>
 
-     <!-- Generation by Mustache of the playset with the help of a template -->
-     <div data-bind='visible: isGeneratorVisible' class='section'>
-    	<div class='row'><p class='col-md-12'>Mustache template to use for the generation</p></div>
-    	<div class='row'><div class='col-md-10 col-md-offset-1'><textarea id='mustache_template' style='width:100%' rows='15' placeholder='Mustache template' required></textarea></div></div>
-    	<div class='row'><button type="button" id='generate_button' class="btn btn-primary col-md-offset-8 col-md-4">Generate !</button></div>
+     <!-- Generation options -->
+     <div data-bind='visible: isOptionsVisible' class='section'>
+      <div class="container">
+        <div class="row">
+          <h4 class="col-md-2">Colors</h4>
+        </div>
+          <div class="row">
+            <div class="col-md-2 padded-row label-text">Primary(Titles)</div>
+            <div class="col-md-2">
+              <input type='text' id="option-color-primary" class='form-control' data-bind="value: optionColorPrimary, text: optionColorPrimary "/>
+            </div>
+            <div class="col-md-1 padded-row">
+              <div class='color-panel' data-bind="style:{ 'background-color' :  optionColorPrimary }">Sample</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2 padded-row label-text">Secondary(Subtitles)</div>
+            <div class="col-md-2">
+              <input type='text' id="option-color-secondary" class='form-control' data-bind="value: optionColorSecondary, text: optionColorSecondary "/>
+            </div>
+            <div class="col-md-1 padded-row">
+              <div class='color-panel' data-bind="style:{ 'background-color' :  optionColorSecondary }">Sample</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2 padded-row label-text">Tertiary(headers/footers)</div>
+            <div class="col-md-2">
+              <input type='text' id="option-color-subtle" class='form-control' data-bind="value: optionColorSubtle, text: optionColorSubtle "/>
+            </div>
+            <div class="col-md-1 padded-row">
+              <div class='color-panel' data-bind="style:{ 'background-color' :  optionColorSubtle }">Sample</div>
+            </div>
+          </div>
+        </div>
      </div>
 
     <!-- About -->

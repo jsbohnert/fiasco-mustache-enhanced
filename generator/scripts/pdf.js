@@ -3,9 +3,25 @@
  */
 function generate_pdf(playsetVM)
 {
+  var colors = {
+    primary: "#AA2222",
+    secondary: "#8B1F1C",
+    tertiary: "#D08484"
+  };
+
+  if (playsetVM.optionColorPrimary()) {
+    colors.primary = playsetVM.optionColorPrimary();
+  }
+  if (playsetVM.optionColorSecondary()) {
+    colors.secondary = playsetVM.optionColorSecondary();
+  }
+  if (playsetVM.optionColorSubtle()) {
+    colors.tertiary = playsetVM.optionColorSubtle();
+  }
+
   var docDefinition = {
     content: [ ],
-    styles: get_pdf_style()
+    styles: get_pdf_style(colors)
   };
 
   if (playsetVM.isCoverLoaded())
@@ -287,14 +303,14 @@ function pdf_add_aftermath_line(content, idx, title, desc) {
  * Get the style for the pdfmake generation
  * @return {json} Json for pdfmake styling
  */
-function get_pdf_style()
+function get_pdf_style(colors)
 {
   var styles = {
     titleOnHeader: {
       fontSize: 10,
       font: "BowlbyOneSC",
       marginTop: -10,
-      color: '#D08484',
+      color: colors.tertiary,
       alignment: 'right'
     },
     sectionHeader: {
@@ -302,12 +318,12 @@ function get_pdf_style()
       font: "BowlbyOneSC",
       marginBottom: 2,
       marginTop: -10,
-      color: '#8B1F1C'
+      color: colors.secondary
     },
     sectionFooter: {
       fontSize: 16,
       font: "BowlbyOneSC",
-      color: '#8B1F1C',
+      color: colors.secondary,
       alignment: 'right',
       marginTop: 4,
       marginBottom: 2
@@ -317,7 +333,7 @@ function get_pdf_style()
       font: "BowlbyOneSC",
       marginBottom: 0,
       marginTop: 5,
-      color: '#8B1F1C'
+      color: colors.secondary,
     },
     category: {
       fontSize: 16,
@@ -335,7 +351,7 @@ function get_pdf_style()
       fontSize: 32,
       font: "BowlbyOneSC",
       marginBottom: 8,
-      color: '#AA2222',
+      color: colors.primary,
       alignment: 'center'
     },
 		subTitle: {

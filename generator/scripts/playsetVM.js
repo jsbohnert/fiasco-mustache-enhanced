@@ -61,6 +61,9 @@ function playsetVM(lngManager, diceFiles) {
   self.dice4 = ko.observable(diceFiles["dice4"]);
   self.dice5 = ko.observable(diceFiles["dice5"]);
   self.dice6 = ko.observable(diceFiles["dice6"]);
+  self.optionColorPrimary = ko.observable("#AA2222");
+  self.optionColorSecondary = ko.observable("#8B1F1C");
+  self.optionColorSubtle = ko.observable("#D08484");
 
   /* Sections of Categories / Items */
   self.sections = ko.observableArray([]);
@@ -90,7 +93,7 @@ function playsetVM(lngManager, diceFiles) {
   }
   self.displayedSections.push(new displayedSectionVM(self.languageManager.current().instasetup_title, 'InstaSetup', false));
   self.displayedSections.push(new displayedSectionVM(self.languageManager.current().aftermath_title, 'Aftermath', false));
-  self.displayedSections.push(new displayedSectionVM('Generator', 'Generator', false));
+  self.displayedSections.push(new displayedSectionVM('Options', 'Options', false));
   self.displayedSections.push(new displayedSectionVM('About', 'About', false));
 
   /* Hide all the sections */
@@ -115,7 +118,7 @@ function playsetVM(lngManager, diceFiles) {
   self.isIntroductionVisible = ko.pureComputed(function() { return self.isSectionVisible('Intro'); }, self);
   self.isInstaSetupVisible = ko.pureComputed(function() { return self.isSectionVisible('InstaSetup'); }, self);
   self.isAftermathVisible = ko.pureComputed(function() { return self.isSectionVisible('Aftermath'); }, self);
-  self.isGeneratorVisible = ko.pureComputed(function() { return self.isSectionVisible('Generator'); }, self);
+  self.isOptionsVisible = ko.pureComputed(function() { return self.isSectionVisible('Options'); }, self);
   self.isAboutVisible = ko.pureComputed(function() { return self.isSectionVisible('About'); }, self);
 
   self.getSectionByNumber = function(number) {
@@ -164,6 +167,9 @@ function playsetVM(lngManager, diceFiles) {
       self.playsetCredits(jsonData.credits);
       self.playsetBoilerplate(jsonData.boilerplate);
       self.playsetMovieNight(jsonData.movienight);
+      self.optionColorPrimary(jsonData.optionColorPrimary);
+      self.optionColorSecondary(jsonData.optionColorSecondary);
+      self.optionColorSubtle(jsonData.optionColorSubtle);
 
 
       // Sections / Categories / Details
