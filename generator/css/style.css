@@ -53,6 +53,13 @@
 }
 
 /* Cover of the Playset */
+
+.cover-label {
+  font-weight: 700;
+  width: 140px;
+  margin: 10px auto;
+}
+
 .cover-without {
   height: 200px;
   width: 140px;
@@ -74,4 +81,36 @@ h1 {
 }
 h2 {
   font-family: 'Bowlby One SC', cursive;
+}
+
+div.condensed-row {
+white-space: nowrap;
+}
+
+div.condensed-row  > button{
+margin-left: 32px;
+}
+
+div.summary {
+margin-top: 4px;
+margin-bottom: 10px;
+}
+
+div.tablespace {
+margin-bottom: 8px;
+margin-top: 8px;
+}
+
+.padded-row {
+padding-top: 6px;
+padding-right: 0px;
+}
+
+.label-text {
+  font-weight: 700;
+}
+
+.color-panel {
+  border: 1px solid black;
+  text-align: center;
 }

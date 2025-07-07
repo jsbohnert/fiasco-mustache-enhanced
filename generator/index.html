@@ -77,8 +77,11 @@
            </div>
          </div>
          <div class="col-md-3">
-           <div class="cover-without" data-bind="visible: isWithNoCover, click: loadCover"></div>
-           <img class="cover-preview" data-bind="visible: isCoverLoaded, click: loadCover, attr: {src: playsetCover()}"></img>
+         <div class="cover-label">Cover Image</div>
+           <div class="cover-without" style="display: block;" data-bind="visible: isWithNoCover, click: loadCover">
+                <img alt="add cover page" src="img/cover_add_blank.png"/>
+           </div>
+           <img alt="uploaded cover page" class="cover-preview" style="display: none;" data-bind="visible: isCoverLoaded, click: loadCover, attr: {src: playsetCover()}"/>
            <form style="display:none" id="cover-load-form">
      			  <input type="file" id="cover-load" name="file" class="form-control" style="display:none"
                    />
@@ -100,24 +103,45 @@
                    data-bind="value: playsetCredits"></textarea>
         </div>
       </div>
+      <div class='row'>
+        <div class="form-group col-md-10 col-md-offset-1">
+         <label for="input_title">Boilerplate</label>
+         <textarea class="form-control" id="input_boilerplate" rows='3' placeholder='Playset Boilerplate'
+                   data-bind="value: playsetBoilerplate"></textarea>
+        </div>
+      </div>
+      <div class='row'>
+        <div class="form-group col-md-10 col-md-offset-1">
+         <label for="input_movienight">Movie Night</label>
+         <textarea class="form-control" id="input_movienight" rows='1' placeholder='Playset Movie Night Inspiration'
+                   data-bind="value: playsetMovieNight"></textarea>
+        </div>
+      </div>
      </div>
 
      <!-- Sections of D6 Tables -->
      <!-- ko foreach: sections -->
      <div class='section' data-bind="attr: {'id': 'section' + number()}, visible: isVisible()">
+     <div class='row' data-bind="visible: hideable">
+        <div class='col-md-12 condensed-row'>
+           <label data-bind="attr: {for: dynamicCheckId}">Enabled</label>
+           <input type="checkbox" data-bind="{checked: isEnabled, attr: {id: dynamicCheckId, name: dynamicCheckId}}"/ >
+        </div>
+     </div>
        <div class='sectionTitle row'>
          <div class='col-md-12 form-group'>
      	     <label data-bind="attr: {'for': 'sec' + number()}">Section designation</label>
      	     <input data-bind="attr: {'id': 'sec' + number()}, value: titleValue" type='text' class='form-control' />
      	   </div>
        </div>
+       <div data-bind="visible: isEnabled">
        <!-- ko foreach: categories -->
        <div class='category'>
      	   <div class='categoryTitle row'>
      	     <div class='dice-category col-md-offset-2 col-md-6'
                 data-bind="css: 'dice' + number()">
               <input type='text' class='form-control'
-                    data-bind="value: title"></input>
+                    data-bind="value: title"/>
            </div>
      	     <div class='col-md-2'>
              <a class='btn btn-default category_showhide' href='#'
@@ -141,21 +165,25 @@
          <!-- /ko -->
        </div>
        <!-- /ko -->
+       </div>
      </div>
      <!-- /ko -->
 
 
      <!-- Insta-Setup -->
-     <div id='section5' class='section' data-bind='visible: isInstaSetupVisible'>
+     <div id='section6' class='section' data-bind='visible: isInstaSetupVisible'>
          <!-- ko with: instasetup -->
          <div class='row'>
-            <div class='col-md-2 col-md-offset-1'>
+            <div class='col-md-2 col-md-offset-1 condensed-row'>
+               <label for="check-instasetup-enabled">Enabled</label>
+               <input type="checkbox" id="check-instasetup-enabled" name="check-instasetup-enabled" data-bind="checked: instasetupEnabled" />
                <button type="button" id='randomize-insta-setup' class="btn btn-primary instasetup-buttons"
-                       data-bind="{click: randomize}">Randomize !</button>
+                       data-bind="{visible: instasetupEnabled, click: randomize}">Randomize !</button>
             </div>
          </div>
 
          <!-- First Section of choices (usually Relationships)-->
+        <div data-bind="visible: instasetupEnabled">
          <div class='row'><div class='col-md-10 col-md-offset-1'>
              <select class='form-control section-selection'
                      data-bind="options: $parent.sections(), optionsText: 'titleValue', value: firstSection"></select>
@@ -220,15 +248,134 @@
              <select class='form-control instasetup-element-selection'
                      data-bind="options: fourthSection().details(), optionsText: 'titleWithCategory', value: fourthSectionChoice1"></select>
          </div></div>
-
+        </div>
          <!-- /ko -->
      </div>
 
-     <!-- Generation by Mustache of the playset with the help of a template -->
-     <div data-bind='visible: isGeneratorVisible' class='section'>
-    	<div class='row'><p class='col-md-12'>Mustache template to use for the generation</p></div>
-    	<div class='row'><div class='col-md-10 col-md-offset-1'><textarea id='mustache_template' style='width:100%' rows='15' placeholder='Mustache template' required></textarea></div></div>
-    	<div class='row'><button type="button" id='generate_button' class="btn btn-primary col-md-offset-8 col-md-4">Generate !</button></div>
+     <!-- Aftermath -->
+     <div id='section7' class='section' data-bind='visible: isAftermathVisible'>
+         <!-- ko with: aftermath -->
+    <div class=''>
+       <label for="check-aftermath-enabled">Enabled</label>
+       <input type="checkbox" id="check-aftermath-enabled" name="check-aftermath-enabled" data-bind="checked: aftermathEnabled"/ >
+    </div>
+     <div data-bind='visible: aftermathEnabled'>
+         <div class=''>
+            <div class='sectionTitle row'>
+              <div class='col-md-10 summary' data-bind='text: playsetVM().languageManager.current().aftermath_summary'>
+              </div>
+            </div>
+
+
+          <div class="row tablespace">
+                <div class="col-md-2"><label class="padded-row" for='aftermath-tableone-title'>Aftermath Table 1:</label></div>
+                <div class="col-md-4"><input type='text' id="aftermath-tableone-title" class='form-control' data-bind="value: tableOneName" /></div>
+          </div>
+          <div class="container">
+         <!-- ko foreach: tableOneEntries -->
+     	   <div class='row' data-bind="">
+     	     <div class='col-md-4'>
+                <input type='text' class='form-control' data-bind="value: title" />
+     	     </div>
+     	     <div class='col-md-8'>
+                <input type='text' class='form-control' data-bind="value: desc" />
+     	     </div>
+     	   </div>
+         <!-- /ko -->
+          </div>
+
+          <div class="row tablespace">
+                <div class="col-md-2"><label class="padded-row" for='aftermath-tabletwo-title'>Aftermath Table 2:</label></div>
+                <div class="col-md-4"><input type='text' id="aftermath-tabletwo-title" class='form-control' data-bind="value: tableTwoName, visible: tableTwoEnabled" /></div>
+                <div class="col-md-4">
+                  <label class="padded-row" for="check-aftermath-tabletwo-enabled">Enabled</label>
+                  <input type="checkbox" id="check-aftermath-tabletwo-enabled" name="check-aftermath-tabletwo-enabled" data-bind="checked: tableTwoEnabled" />
+                </div>
+          </div>
+
+         <div class="container" data-bind='visible: tableTwoEnabled'>
+         <!-- ko foreach: tableTwoEntries -->
+     	   <div class='row' data-bind="">
+     	     <div class='col-md-4'>
+                <input type='text' class='form-control' data-bind="value: title" />
+     	     </div>
+     	     <div class='col-md-8'>
+                <input type='text' class='form-control' data-bind="value: desc" />
+     	     </div>
+     	   </div>
+         <!-- /ko -->
+         </div>
+         </div>
+     </div>
+         <!-- /ko -->
+     </div>
+
+     <!-- Generation options -->
+     <div data-bind='visible: isOptionsVisible' class='section'>
+      <div class="container">
+        <div class="row">
+          <h4 class="col-md-2">Colors</h4>
+        </div>
+        <div class="row">
+          <div class="col-md-2 col-md-offset-1 padded-row label-text">Primary(Titles)</div>
+          <div class="col-md-2">
+            <input type='text' id="option-color-primary" class='form-control' data-bind="value: optionColorPrimary, text: optionColorPrimary "/>
+          </div>
+          <div class="col-md-1 padded-row">
+            <div class='color-panel' data-bind="style:{ 'background-color' :  optionColorPrimary }">Sample</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 col-md-offset-1 padded-row label-text">Secondary(Subtitles)</div>
+          <div class="col-md-2">
+            <input type='text' id="option-color-secondary" class='form-control' data-bind="value: optionColorSecondary, text: optionColorSecondary "/>
+          </div>
+          <div class="col-md-1 padded-row">
+            <div class='color-panel' data-bind="style:{ 'background-color' :  optionColorSecondary }">Sample</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 col-md-offset-1 padded-row label-text">Tertiary(headers/footers)</div>
+          <div class="col-md-2">
+            <input type='text' id="option-color-subtle" class='form-control' data-bind="value: optionColorSubtle, text: optionColorSubtle "/>
+          </div>
+          <div class="col-md-1 padded-row">
+            <div class='color-panel' data-bind="style:{ 'background-color' :  optionColorSubtle }">Sample</div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <h4 class="col-md-2">Layout</h4>
+        </div>
+
+        <div class="row">
+          <div class="col-md-2 col-md-offset-1 padded-row label-text">Table Layout</div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 col-md-offset-1">
+            <label for="option-layout-concise">
+              <input type="radio" name="option-layout" value="concise" data-bind="checked: optionTableLayout"/>
+              Concise
+            </label>
+          </div>
+          <div class="col-md">
+              Each table on one page, landscape. Better for short descriptions. (fiasco-mustache style)
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-2 col-md-offset-1">
+            <label for="option-layout-classic">
+              <input type="radio" name="option-layout" value="classic" data-bind="checked: optionTableLayout"/>
+              Classic Fiasco
+            </label>
+          </div>
+          <div class="col-md">
+              Each table spans 2 pages, portrait. Larger text, better for long descriptions.
+          </div>
+        </div>
+      </div>
      </div>
 
     <!-- About -->
@@ -281,7 +428,9 @@
     <script src="scripts/displayedSectionVM.js"></script>
     <script src="scripts/sectionVM.js"></script>
     <script src="scripts/instasetupVM.js"></script>
+    <script src="scripts/aftermathVM.js"></script>
     <script src="scripts/playsetVM.js"></script>
+    <script src="scripts/diceFiles.js"></script>
  </body>
  <script>
 
@@ -297,7 +446,7 @@ function generate_mustache()
 
 $(function() {
 
-   var viewModel = new playsetVM(langManager);
+   var viewModel = new playsetVM(langManager, diceFiles);
    ko.applyBindings(viewModel);
 
    $("#file-load").change(function (evt) {

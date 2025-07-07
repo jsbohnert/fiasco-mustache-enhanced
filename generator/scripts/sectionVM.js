@@ -1,9 +1,19 @@
 /* Describes a Section of the Playset (like Relationships, Needs, Objets, Locations, ...) */
-function sectionVM(title, number) {
+
+var defaultOptions = {
+  hideable: false,
+  isEnabled: false
+};
+
+function sectionVM(title, number, options) {
   var self = this;
 
+  self.options = {...defaultOptions, ...options};
   self.title = ko.observable(title);
   self.number = ko.observable(number);
+  self.hideable = ko.observable(self.options["hideable"]);
+  self.dynamicCheckId = ko.computed(() => `section-{self.number()}-enabled`);
+  self.isEnabled = ko.observable(options.isEnabled);
   self.titleValue = ko.pureComputed({
     read: function() { return self.title(); },
     write: function(value) {

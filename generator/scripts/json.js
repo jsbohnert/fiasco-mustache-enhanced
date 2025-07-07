@@ -17,6 +17,12 @@ function get_json_fromPlaysetVM(playsetVM, withDescriptionParts, withDescription
   json_set_description(jsonData, playsetVM.playsetDescription(), withDescriptionParts, withDescriptionParagraphs);
 
   jsonData.credits = playsetVM.playsetCredits();
+  jsonData.boilerplate = playsetVM.playsetBoilerplate();
+  jsonData.movienight = playsetVM.playsetMovieNight();
+  jsonData.optionColorPrimary = playsetVM.optionColorPrimary();
+  jsonData.optionColorSecondary = playsetVM.optionColorSecondary();
+  jsonData.optionColorSubtle = playsetVM.optionColorSubtle();
+  jsonData.optionTableLayout = playsetVM.optionTableLayout();
 
   // Tables of elements
   jsonData.sections = [];
@@ -26,6 +32,7 @@ function get_json_fromPlaysetVM(playsetVM, withDescriptionParts, withDescription
       var jsonSection = { label: currentSection.title() };
       // A unique property for the label
       jsonData["section"+(iSection + 1)] = jsonSection.label;
+      jsonSection.isEnabled = currentSection.isEnabled();
       jsonSection.categories = [];
       // Each category
       for (var iCategory = 0; iCategory < currentSection.categories().length; iCategory++) {
@@ -49,6 +56,7 @@ function get_json_fromPlaysetVM(playsetVM, withDescriptionParts, withDescription
 
   // All elements with a single property
   jsonData.instasetup = get_instasetup_json(playsetVM);
+  jsonData.aftermath = playsetVM.aftermath().toJson();
 
   return jsonData;
 }

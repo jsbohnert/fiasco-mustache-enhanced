@@ -1,4 +1,46 @@
-function playsetVM(lngManager) {
+function defaultSectionTitleByIndex(lang, idx) {
+  switch(idx) {
+    case 1:
+      return lang.category_relationships;
+      break;
+    case 2:
+      return lang.category_needs;
+      break;
+    case 3:
+      return lang.category_objects;
+      break;
+    case 4:
+      return lang.category_locations;
+      break;
+    case 5:
+      return lang.category_tilt;
+      break;
+    default:
+      return `Section #${idx}`
+  }
+}
+
+function sectionHideableByIndex(idx) {
+  switch(idx) {
+    case 5:
+      return true;
+      break;
+    default:
+      return false;
+  }
+}
+
+function sectionEnabledByIndex(idx) {
+  switch(idx) {
+    case 5:
+      return false;
+      break;
+    default:
+      return true;
+  }
+}
+
+function playsetVM(lngManager, diceFiles) {
 
   var self = this;
 
@@ -6,22 +48,40 @@ function playsetVM(lngManager) {
 
   /* Introduction Section - Description of Playset */
   self.playsetTitle = ko.observable('Playset Title');
-  self.playsetSubtitle = ko.observable('Playset Sub-Title');
+  self.playsetSubtitle = ko.observable('Playset Subtitle');
   self.playsetTeaser = ko.observable('Playset Teaser');
   self.playsetDescription = ko.observable('');
-  self.playsetCredits = ko.observable('#Credits\nMade via Fiasco-Mustache\n#Boilerplate\nFiasco is Bully Pulpit Games production.');
+  self.playsetCredits = ko.observable('Written by <author>\nMade via Fiasco-Mustache');
+  self.playsetBoilerplate = ko.observable('Fiasco is a Bully Pulpit Games production.\nFor more information of about Fiasco or to download other playsets and materials, visit www.bullypulpitgames.com');
+  self.playsetMovieNight = ko.observable('Films to watch');
   self.playsetCover = ko.observable(null);
+  self.dice1 = ko.observable(diceFiles["dice1"]);
+  self.dice2 = ko.observable(diceFiles["dice2"]);
+  self.dice3 = ko.observable(diceFiles["dice3"]);
+  self.dice4 = ko.observable(diceFiles["dice4"]);
+  self.dice5 = ko.observable(diceFiles["dice5"]);
+  self.dice6 = ko.observable(diceFiles["dice6"]);
+  self.optionColorPrimary = ko.observable("#AA2222");
+  self.optionColorSecondary = ko.observable("#8B1F1C");
+  self.optionColorSubtle = ko.observable("#D08484");
+  self.optionTableLayout = ko.observable("classic");
 
   /* Sections of Categories / Items */
   self.sections = ko.observableArray([]);
-  for(var iSection = 1; iSection <= 4; iSection++) {
-    var section = new sectionVM('Section #' + iSection, iSection);
+  for(var iSection = 1; iSection <= 5; iSection++) {
+    var section = new sectionVM(defaultSectionTitleByIndex(self.languageManager.current(), iSection), iSection,
+      {
+        hideable: sectionHideableByIndex(iSection),
+        isEnabled: sectionEnabledByIndex(iSection)
+      });
     self.sections.push(section);
   }
 
   /* Insta-Setup */
   var setup = new instasetupVM(self);
   self.instasetup = ko.observable(setup);
+  var aftermath = new aftermathVM(self);
+  self.aftermath = ko.observable(aftermath);
 
   /**********************/
   /* Sections of the UI */
@@ -33,7 +93,8 @@ function playsetVM(lngManager) {
     self.displayedSections.push(self.sections()[iSection].displayedSection());
   }
   self.displayedSections.push(new displayedSectionVM(self.languageManager.current().instasetup_title, 'InstaSetup', false));
-  self.displayedSections.push(new displayedSectionVM('Generator', 'Generator', false));
+  self.displayedSections.push(new displayedSectionVM(self.languageManager.current().aftermath_title, 'Aftermath', false));
+  self.displayedSections.push(new displayedSectionVM('Options', 'Options', false));
   self.displayedSections.push(new displayedSectionVM('About', 'About', false));
 
   /* Hide all the sections */
@@ -57,7 +118,8 @@ function playsetVM(lngManager) {
   }
   self.isIntroductionVisible = ko.pureComputed(function() { return self.isSectionVisible('Intro'); }, self);
   self.isInstaSetupVisible = ko.pureComputed(function() { return self.isSectionVisible('InstaSetup'); }, self);
-  self.isGeneratorVisible = ko.pureComputed(function() { return self.isSectionVisible('Generator'); }, self);
+  self.isAftermathVisible = ko.pureComputed(function() { return self.isSectionVisible('Aftermath'); }, self);
+  self.isOptionsVisible = ko.pureComputed(function() { return self.isSectionVisible('Options'); }, self);
   self.isAboutVisible = ko.pureComputed(function() { return self.isSectionVisible('About'); }, self);
 
   self.getSectionByNumber = function(number) {
@@ -104,6 +166,12 @@ function playsetVM(lngManager) {
         self.playsetDescription(get_oldDescription_toNewFormat(jsonData));
       }
       self.playsetCredits(jsonData.credits);
+      self.playsetBoilerplate(jsonData.boilerplate);
+      self.playsetMovieNight(jsonData.movienight);
+      self.optionColorPrimary(jsonData.optionColorPrimary);
+      self.optionColorSecondary(jsonData.optionColorSecondary);
+      self.optionColorSubtle(jsonData.optionColorSubtle);
+      self.optionTableLayout(jsonData.optionTableLayout);
 
 
       // Sections / Categories / Details
@@ -111,6 +179,7 @@ function playsetVM(lngManager) {
         var jsonSection = jsonData.sections[iSection];
         var sectionVM = self.sections()[iSection];
         sectionVM.titleValue(jsonSection.label);
+        sectionVM.isEnabled(jsonSection.isEnabled);
         for(var iCategory = 0; iCategory < jsonSection.categories.length; iCategory++) {
           var jsonCategory = jsonSection.categories[iCategory];
           var categoryVM = sectionVM.categories()[iCategory];
@@ -123,6 +192,7 @@ function playsetVM(lngManager) {
         }
       }
       self.instasetup().fromJson(jsonData.instasetup);
+      self.aftermath().fromJson(jsonData.aftermath);
     }
   };
 

@@ -4,6 +4,7 @@ function instasetupVM(playset) {
 
   self.playsetVM = ko.observable(playset);
   self.truc = "bidule";
+  self.instasetupEnabled = ko.observable(true);
 
   /* First section of the Insta-Setup */
   self.firstSection = ko.observable(playset.sections()[0]);
@@ -66,6 +67,7 @@ function instasetupVM(playset) {
   /* Returns the Insta-Setup indexes to be saved in the Json file */
   self.toJson = function() {
     var jsonIS = { };
+    jsonIS.instasetupEnabled=self.instasetupEnabled();
     // Sections
     jsonIS.section1 = self.firstSection().number();
     jsonIS.section2 = self.secondSection().number();
@@ -94,6 +96,9 @@ function instasetupVM(playset) {
 
   self.fromJson = function(json) {
     if (json != null) {
+      if (json.instasetupEnabled !== null) {
+        self.instasetupEnabled(json.instasetupEnabled);
+      }
       if (json.section1 != null) {
         self.firstSection(self.playsetVM().getSectionByNumber(json.section1));
         if (self.firstSection() != null) {

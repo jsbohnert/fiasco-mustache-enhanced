@@ -3,9 +3,25 @@
  */
 function generate_pdf(playsetVM)
 {
+  var colors = {
+    primary: "#AA2222",
+    secondary: "#8B1F1C",
+    tertiary: "#D08484"
+  };
+
+  if (playsetVM.optionColorPrimary()) {
+    colors.primary = playsetVM.optionColorPrimary();
+  }
+  if (playsetVM.optionColorSecondary()) {
+    colors.secondary = playsetVM.optionColorSecondary();
+  }
+  if (playsetVM.optionColorSubtle()) {
+    colors.tertiary = playsetVM.optionColorSubtle();
+  }
+
   var docDefinition = {
     content: [ ],
-    styles: get_pdf_style()
+    styles: get_pdf_style(colors)
   };
 
   if (playsetVM.isCoverLoaded())
@@ -19,13 +35,23 @@ function generate_pdf(playsetVM)
   for(var iSection = 0; iSection < playsetVM.sections().length; iSection++)
   {
     var currentSection = playsetVM.sections()[iSection];
-    pdf_add_section(docDefinition.content, currentSection, playsetVM.playsetTeaser(), playsetVM.playsetTitle());
+    switch (playsetVM.optionTableLayout())
+    {
+      case "classic":
+        pdf_add_section_classic(docDefinition.content, currentSection, playsetVM.playsetTeaser(), playsetVM.playsetTitle(), playsetVM);
+        break;
+      case "concise":
+        pdf_add_section(docDefinition.content, currentSection, playsetVM.playsetTeaser(), playsetVM.playsetTitle(), playsetVM);
+        break;
+
+    }
   }
 
   pdf_add_instasetup(docDefinition.content, playsetVM);
+  pdf_add_aftermath(docDefinition.content, playsetVM);
 
   var customFilename = "Fiasco Playset - " + playsetVM.playsetTitle() + ".pdf";
-  console.log(JSON.stringify(docDefinition));
+  //console.log(JSON.stringify(docDefinition));
   pdfMake.createPdf(docDefinition).download(customFilename);
 }
 
@@ -39,6 +65,8 @@ function pdf_add_description(content, playsetVM)
   // Title page with credits
   content.push({ text: playsetVM.playsetTitle(), style: 'title', pageOrientation: 'portrait'});
   var creditsBlocks = divideText_intoBlocks_titleParagraph(playsetVM.playsetCredits());
+
+  content.push({ text: playsetVM.languageManager.current().section_credits, style: 'subTitle' });
   for(var iBlock = 0; iBlock < creditsBlocks.length; iBlock++)
   {
     var block = { "style": "description", "text": creditsBlocks[iBlock].content };
@@ -48,8 +76,20 @@ function pdf_add_description(content, playsetVM)
     content.push(block);
   }
 
+  var boilerplateBlocks = divideText_intoBlocks_titleParagraph(playsetVM.playsetBoilerplate());
+  content.push({ text: playsetVM.languageManager.current().section_boilerplate, style: 'subTitle' });
+  for(var iBlock = 0; iBlock < boilerplateBlocks.length; iBlock++)
+  {
+    var block = { "style": "description", "text": boilerplateBlocks[iBlock].content };
+    if (boilerplateBlocks[iBlock].type == 'title') {
+      block.style = 'subTitle';
+    }
+    content.push(block);
+  }
+
   // Description page
-  content.push({ text: playsetVM.playsetSubtitle(), style: 'title', pageOrientation: 'portrait', pageBreak: 'before' });
+  content.push({ text: playsetVM.languageManager.current().section_thescore, style: 'title' , pageBreak: 'before'});
+  content.push({ text: playsetVM.playsetSubtitle(), style: 'subTitle', pageOrientation: 'portrait' });
   var descriptionBlocks = divideText_intoBlocks_titleParagraph(playsetVM.playsetDescription());
   for(var iBlock = 0; iBlock < descriptionBlocks.length; iBlock++)
   {
@@ -69,6 +109,10 @@ function pdf_add_description(content, playsetVM)
       content.push({ text: descriptionBlocks[iBlock].content, style: blockStyle });
     }
   }
+
+  // Movie Night
+  content.push({ text: playsetVM.languageManager.current().section_movienight, style: 'subTitle', pageOrientation: 'portrait'});
+  content.push({ text: playsetVM.playsetMovieNight(), style: blockStyle});
 }
 
 function pdf_add_cover(content, dataUrl)
@@ -82,8 +126,13 @@ function pdf_add_cover(content, dataUrl)
  * @param {json} jsonSection   Json data for the Section description
  * @param {string} playsetTeaser Teaser (bottom description) for the playset
  */
-function pdf_add_section(content, sectionVM, playsetTeaser, playsetTitle)
+function pdf_add_section(content, sectionVM, playsetTeaser, playsetTitle, playset)
 {
+  var imageSize = 12;
+  if (!sectionVM.isEnabled())
+  {
+    return;
+  }
   content.push({ text: playsetTitle, style: 'titleOnHeader', pageBreak: 'before', pageOrientation: 'landscape' });
   content.push({ text: sectionVM.title() + " ...", style: 'sectionHeader' });
 
@@ -100,15 +149,117 @@ function pdf_add_section(content, sectionVM, playsetTeaser, playsetTitle)
 
     var currentCategory = sectionVM.categories()[iCategory];
     columns[iColumn].push({ text: (iCategory + 1) + " - " + currentCategory.title(), style: 'category' } );
-    // Chaque élément de la catégorie
-    for (var iDetail = 0; iDetail < currentCategory.items().length; iDetail++)
-    {
-      var currentDetail = currentCategory.items()[iDetail];
-      columns[iColumn].push({ text: (iDetail + 1) + " - " + currentDetail.textValue(), style: 'details' });
-    }
+    columns[iColumn].push({
+       table: {
+          headerRows: 0,
+          widths: [6, 14, '*'],
+          body: [
+            [
+              {text: ""},
+              {image: playset.dice1(), width: imageSize},
+              {text: currentCategory.items()[0].textValue(), style: 'details'}
+            ],
+            [
+              {text: ""},
+              {image: playset.dice2(), width: imageSize},
+              {text: currentCategory.items()[1].textValue(), style: 'details'}
+            ],
+            [
+              {text: ""},
+              {image: playset.dice3(), width: imageSize},
+              {text: currentCategory.items()[2].textValue(), style: 'details'}
+            ],
+            [
+              {text: ""},
+              {image: playset.dice4(), width: imageSize},
+              {text: currentCategory.items()[3].textValue(), style: 'details'}
+            ],
+            [
+              {text: ""},
+              {image: playset.dice5(), width: imageSize},
+              {text: currentCategory.items()[4].textValue(), style: 'details'}
+            ],
+            [
+              {text: ""},
+              {image: playset.dice6(), width: imageSize},
+              {text: currentCategory.items()[5].textValue(), style: 'details'}
+            ]
+          ],
+       },
+       layout: "noBorders"
+     });
+
   }
   content.push({ columns: columns });
   content.push({ text: "... " + playsetTeaser, style: 'sectionFooter' });
+}
+
+
+function pdf_add_section_classic_page(content, pageCategories, sectionVM, playsetTeaser, playsetTitle, playset){
+  var imageSize = 16;
+  content.push({ text: playsetTitle, style: 'titleOnHeader', pageBreak: 'before', pageOrientation: 'portrait' });
+  content.push({ text: sectionVM.title() + " ...", style: 'sectionHeader' });
+
+  for (var iCat = 0; iCat < pageCategories.length; iCat++)
+  {
+    var category = pageCategories[iCat];
+    content.push({ text:  category.number() + " - " + category.title(), style: 'category' } );
+    content.push({
+       table: {
+          headerRows: 0,
+          widths: [6, 14, '*'],
+          body: [
+            [
+              {text: ""},
+              {image: playset.dice1(), width: imageSize},
+              {text: category.items()[0].textValue(), style: 'details2'}
+            ],
+            [
+              {text: ""},
+              {image: playset.dice2(), width: imageSize},
+              {text: category.items()[1].textValue(), style: 'details2'}
+            ],
+            [
+              {text: ""},
+              {image: playset.dice3(), width: imageSize},
+              {text: category.items()[2].textValue(), style: 'details2'}
+            ],
+            [
+              {text: ""},
+              {image: playset.dice4(), width: imageSize},
+              {text: category.items()[3].textValue(), style: 'details2'}
+            ],
+            [
+              {text: ""},
+              {image: playset.dice5(), width: imageSize},
+              {text: category.items()[4].textValue(), style: 'details2'}
+            ],
+            [
+              {text: ""},
+              {image: playset.dice6(), width: imageSize},
+              {text: category.items()[5].textValue(), style: 'details2'}
+            ]
+          ],
+       },
+       layout: "noBorders"
+    });
+  }
+
+  content.push({ text: "... " + playsetTeaser, style: 'sectionFooter' });
+}
+
+function pdf_add_section_classic(content, sectionVM, playsetTeaser, playsetTitle, playset)
+{
+  if (!sectionVM.isEnabled())
+  {
+    return;
+  }
+
+  var pageCategories = [sectionVM.categories()[0], sectionVM.categories()[1], sectionVM.categories()[2]];
+  pdf_add_section_classic_page(content, pageCategories, sectionVM, playsetTeaser, playsetTitle, playset);
+
+  var pageCategories = [sectionVM.categories()[3], sectionVM.categories()[4], sectionVM.categories()[5]];
+  pdf_add_section_classic_page(content, pageCategories, sectionVM, playsetTeaser, playsetTitle, playset);
 }
 
 /**
@@ -118,6 +269,10 @@ function pdf_add_section(content, sectionVM, playsetTeaser, playsetTitle)
  */
 function pdf_add_instasetup(content, playsetVM)
 {
+  if ( !playsetVM.instasetup().instasetupEnabled())
+  {
+    return;
+  }
   content.push({ text: playsetVM.playsetTitle(), style: 'titleOnHeader', pageBreak: 'before', pageOrientation: 'portrait' });
   content.push({ text: playsetVM.languageManager.current().instasetup_title, style: 'title' });
 
@@ -160,39 +315,103 @@ function pdf_add_instasetup_detail(content, detail)
 }
 
 /**
+ * Add the Insta-Setup Section part for the PDF generation
+ * @param {json} content       Json data for pdfmake generation
+ * @param {json} playsetVM     ViewModel of the Playset
+ */
+function pdf_add_aftermath(content, playsetVM)
+{
+  var aftermath = playsetVM.aftermath();
+
+  if ( !aftermath.aftermathEnabled())
+  {
+    return;
+  }
+  content.push({ text: playsetVM.playsetTitle(), style: 'titleOnHeader', pageBreak: 'before', pageOrientation: 'portrait' });
+  content.push({ text: aftermath.tableOneName(), style: 'title' });
+  for (var iTableRow = 0; iTableRow < aftermath.tableOneEntries().length; iTableRow++)
+  {
+    var title = aftermath.tableOneEntries()[iTableRow].title().trim();
+    var desc = aftermath.tableOneEntries()[iTableRow].desc().trim();
+    if (title.length == 0 && desc.length == 0 )
+    {
+      continue;
+    }
+    pdf_add_aftermath_line(content, iTableRow, title, desc)
+
+  }
+
+
+  if (!aftermath.tableTwoEnabled()) {
+    return;
+  }
+  content.push({ text: playsetVM.playsetTitle(), style: 'titleOnHeader', pageBreak: 'before', pageOrientation: 'portrait' });
+  content.push({ text: aftermath.tableTwoName(), style: 'title' });
+
+  for (var iTableRow = 0; iTableRow < aftermath.tableTwoEntries().length; iTableRow++)
+    {
+      var title = aftermath.tableTwoEntries()[iTableRow].title().trim();
+      var desc = aftermath.tableTwoEntries()[iTableRow].desc().trim();
+      if (title.length == 0 && desc.length == 0 )
+      {
+        continue;
+      }
+      pdf_add_aftermath_line(content, iTableRow, title, desc)
+    }
+}
+
+function pdf_add_aftermath_line(content, idx, title, desc) {
+  if (title.length == 0 && desc.length == 0 )
+    {
+      return;
+    }
+
+    if (idx >  0) {
+      content.push({text: ' ', style: 'spacerLine'});
+    }
+    content.push({text: [
+
+      {text: title, style: 'leadingText'},
+      '  ',
+      {text: desc}
+    ]});
+}
+
+/**
  * Get the style for the pdfmake generation
  * @return {json} Json for pdfmake styling
  */
-function get_pdf_style()
+function get_pdf_style(colors)
 {
   var styles = {
     titleOnHeader: {
       fontSize: 10,
       font: "BowlbyOneSC",
-      marginTop: 0,
-      color: '#D08484',
+      marginTop: -10,
+      color: colors.tertiary,
       alignment: 'right'
     },
     sectionHeader: {
       fontSize: 26,
       font: "BowlbyOneSC",
-      marginBottom: 8,
+      marginBottom: 2,
       marginTop: -10,
-      color: '#8B1F1C'
+      color: colors.secondary
     },
     sectionFooter: {
-      fontSize: 22,
+      fontSize: 16,
       font: "BowlbyOneSC",
-      color: '#8B1F1C',
+      color: colors.secondary,
       alignment: 'right',
-      marginTop: 5
+      marginTop: 4,
+      marginBottom: 2
     },
     instaSetupSection: {
       fontSize: 26,
       font: "BowlbyOneSC",
       marginBottom: 0,
       marginTop: 5,
-      color: '#8B1F1C'
+      color: colors.secondary,
     },
     category: {
       fontSize: 16,
@@ -203,14 +422,18 @@ function get_pdf_style()
     },
     details: {
       fontSize: 12,
-      marginLeft: 22,
-      marginTop: 1
+      marginLeft: 2,
+     // marginTop: 1
+    },
+    details2: {
+      fontSize: 14,
+      marginLeft: 4,
     },
     title: {
       fontSize: 32,
       font: "BowlbyOneSC",
       marginBottom: 8,
-      color: '#AA2222',
+      color: colors.primary,
       alignment: 'center'
     },
 		subTitle: {
@@ -223,6 +446,13 @@ function get_pdf_style()
       fontSize: 16,
 			marginBottom: 18,
       alignment: 'justify'
+    },
+    spacerLine: {
+      fontSize: 6
+    },
+    leadingText: {
+      marginTop: 2,
+      bold: true
     }
   };
   return styles;
