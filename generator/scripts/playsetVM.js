@@ -51,8 +51,8 @@ function playsetVM(lngManager, diceFiles) {
   self.playsetSubtitle = ko.observable('Playset Subtitle');
   self.playsetTeaser = ko.observable('Playset Teaser');
   self.playsetDescription = ko.observable('');
-  self.playsetCredits = ko.observable('Made via Fiasco-Mustache');
-  self.playsetBoilerplate = ko.observable('Fiasco is Bully Pulpit Games production.');
+  self.playsetCredits = ko.observable('Written by <author>\nMade via Fiasco-Mustache');
+  self.playsetBoilerplate = ko.observable('Fiasco is a Bully Pulpit Games production.\nFor more information of about Fiasco or to download other playsets and materials, visit www.bullypulpitgames.com');
   self.playsetMovieNight = ko.observable('Films to watch');
   self.playsetCover = ko.observable(null);
   self.dice1 = ko.observable(diceFiles["dice1"]);
