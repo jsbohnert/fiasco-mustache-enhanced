@@ -2,7 +2,7 @@
 <html>
  <head>
    <meta charset="utf-8">
-   <title>Fiasco Mustache - A Fiasco Playset Editor</title>
+   <title>Fiasco Mustache (enhanced) - A Fiasco Playset Editor</title>
    <script src="js/mustache.js"></script>
    <script src="js/FileSaver.min.js"></script>
 
@@ -17,7 +17,7 @@
   <div class="container">
     <div class='row'>
       <div class='col-md-8'>
-        <h1>Fiasco-Mustache</h1>
+        <h1>Fiasco-Mustache<small>(enhanced)</small></h1>
         <h2>A playset-editor for Fiasco</h2>
       </div>
 
@@ -382,29 +382,42 @@
     <div data-bind='visible: isAboutVisible' class='section'>
         <div class='row'><div class='col-md-10 col-md-offset-1'>
             <h3>What is Fiasco-Mustache ?</h3>
-            <p>"Fiasco-Mustache" is a project I made in order to easily produce playsets for <a href='http://www.bullypulpitgames.com/games/fiasco/'>Fiasco</a>, the game by Bully Pulpit Game.</p>
-            <p>This project is a web-page, with no server-related code, so everyone can get a local copy and test it with any web-browser. The name comes from a distinct library used to generate the playset : <a href='https://mustache.github.io/'>Mustache</a>. The current version doesn't make much use of the Mustache library, but the name stuck.
+            <p>"Fiasco-Mustache" is a project made in order to easily produce playsets for <a href="http://www.bullypulpitgames.com/games/fiasco/">Fiasco</a>, the game by Bully Pulpit Game.</p>
+            <p>This project is a web-page, with no server-related code, so everyone can get a local copy and test it with any web-browser. The name comes from a distinct library used to generate the playset : <a href="https://mustache.github.io/">Mustache</a>. The current version doesn&#39;t make much use of the Mustache library, but the name stuck.</p>
+            <h3>What's with the "Enhanced" ?</h3>
+            <p>Well, this actual site you&#39;re visiting now is what happened after someone else found the original fiasco-mustache project <a href="http://gulix.github.io/fiasco-mustache/">here</a>, got obsessed with how cool it was, and started making some tiny QOL changes. Once he got carried away with new ideas long past the point where it seemed like he was fixing bugs and more like he was adding all kinds of extra functionality that the original author might not even desire, he decided to just mount the project here and give as much gratitude as he could to the original author who made such a cool and versatile authoring tool possible.</p>
+            <p>Wherever possible, the original author&#39;s words and text are kept exactly as they were, with changes only as necessary to make sure this project is clearly identifying itself as a change from the original, and to honor the license while removing "I" references which could be confusing as impersonating the original author.</p>
+            <p>Notable improvements include:</p>
+            <ul>
+                <li>More customizable sections</li>
+                <li>Multiple page layouts available</li>
+                <li>Improved formatting in the new &#39;Fiasco style&#39; layout, including dice images mimicking the official playsets</li>
+            </ul>
             <h3>How to use Fiasco-Mustache ?</h3>
-            <p>First step is to fill all the blank fields from 'Introduction' to 'Section #4'. It matches a classic Fiasco-playset layout.</p>
-            <p>In the "Description" and "Credits" part of the "Introduction" tab, you can create "Title" line by prefixing them with the character &#35;.</p>
-            <p>You can also add an image for the Cover of your Playset</p>
+            <p>You can download the last version of the code source, or use it directly at the <a href="https://jsbohnert.github.io/fiasco-mustache-enhanced/">hosted page</a>.</p>
+            <p>Fill in any blank fields you want on the first page.</p>
+            <p>You may add a image for the Cover of your Playset by clicking the placeholder "+" image.</p>
             <p>There's a "Save" button that you can use to save your work in a local JSON file. You can then use the "Load" button to restore your work.</p>
+            <p>The tabs represent individual sections of a Fiasco playset, and the traditional sections are titled by default. (Relationships, Needs, etc). You may change the names of these sections to customize your playset.</p>
+            <p>Some common but not required sections (Tilt Table, Insta-Setup, Aftermath) can be individually enabled/disabled on their tabs if you dont want them in your Playset.</p>
+            <p>The optional Aftermath table can have one or two tables (a common choice in many community playsets)</p>
+            <p>The "Options" tab contains some special settings, like color and choosing page layout styled - play around to see what works best for your content!</p>
             <p>The final step is to produce your playset. Click on the "Generate PDF" button to get a nice PDF ready to be print and published !</p>
-            <p>You can also use the "old" version of the Mustache generator. You'll need a "mustache template", a text that will be used to generate your template to various form : XML file, BBcode, pure text, wiki format, ... Paste your template in the text frame of the 'Generate' tab. Then click the "Generate" button, and save your file on your computer.</p>
-            <p>You now can produce your playset in various formats ! Here is a <a href='templates/examples.html'>temporary link</a> with various templates you can use.</p>
             <h3>Licenses</h3>
-            <p><b>Current version :</b> 0.3 &lt;2018-11-07&gt;</p>
-            <p>"Fiasco-Mustache" is released under the <a href='https://creativecommons.org/licenses/by-sa/3.0/'>CC-By-SA license</a>, and is a <a href='http://en.wikipedia.org/wiki/Beerware'>Beerware</a>.</p>
-            <p>His author is <a href='http://www.gulix.fr'>Gulix</a> and the source code can be found on <a href='http://www.github.com/gulix/fiasco-mustache'>GitHub</a></p>
+            <p>"Fiasco-Mustache" and "Fiasco-Mustache-Enhanced" is released under the <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-By-SA license</a>, and is a <a href="http://en.wikipedia.org/wiki/Beerware">Beerware</a>.</p>
             <p>"Fiasco-Mustache" uses the following libraries :</p>
             <ul>
-                <li><a href='https://github.com/janl/mustache.js/'>Mustache.js</a> for the template generation</li>
-                <li><a href='http://getbootstrap.com'>Bootstrap</a> for the css rendering</li>
-                <li><a href='http://jquery.com/'>jQuery</a> for the AJAX functions</li>
-                <li><a href='https://knockoutjs.com/'>KnockoutJS</a> for the UI interaction</li>
-                <li><a href='https://github.com/eligrey/FileSaver.js/'>FileSaver.js</a> for the file saving/loading</li>
-                <li><a href='http://pdfmake.org/#/'>PdfMake</a> for generating the PDF</li>
+                <li><a href="Mustache.js">https://github.com/janl/mustache.js/</a> for the template generation</li>
+                <li><a href="Bootstrap">http://getbootstrap.com</a> for the css rendering</li>
+                <li><a href="jQuery">http://jquery.com/</a> for the AJAX functions</li>
+                <li><a href="KnockoutJS">https://knockoutjs.com/</a> for the UI interaction</li>
+                <li><a href="FileSaver.js">https://github.com/eligrey/FileSaver.js/</a> for the file saving/loading</li>
+                <li><a href="PdfMake">http://pdfmake.org/#/</a> for generating the PDF</li>
             </ul>
+            <h3>Credit</h3>
+	    <p>All due credit and inspiration is given to the original author of Fiasco-Mustache, Nicolas Ronvel <a href="https://github.com/Gulix/fiasco-mustache">(original repo)</a><p>
+
+
         </div></div>
     </div>
 
